@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ehcache xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+   xsi:noNamespaceSchemaLocation="ehcache.xsd" updateCheck="true"
+   monitoring="autodetect" dynamicConfig="true">
+   
+   <!-- java.io.tmpdir is the default temp file path -->
+   <!-- <diskStore path="java.io.tmpdir"/> -->
+      
+    <!-- Default cache configuration is used by Hibernate when there is no cache region specified for entity or HQL Query 
+    	This default cache is currently being used by all entities except static entities (Country, Role, Industry, Time zone) and Activity entry related entities.
+    	
+    	This cache is refreshed every 10 minutes because eternal is false and timeToLiveSeconds is 10 minutes (600 seconds).
+		This will make sure that cache gets invalidated every 10 minutes.
+ 		Memory cache can keep maximum 1000 entities ,
+    	disk store will be used if entities are more than 500.
+    	But there is also a limit of size in disk store, it can store maximum 1GB of entities data. If data exceeds 1 GB than the lease recently data will be removed from disk store.
+    -->
+   <defaultCache	
+            maxEntriesLocalHeap="500"
+            eternal="false"
+   			timeToLiveSeconds="600"
+            diskSpoolBufferSizeMB = "30"
+            maxBytesLocalDisk="1G"
+            memoryStoreEvictionPolicy="LRU"
+            statistics = "true">
+        <persistence strategy="localTempSwap"/>
+    </defaultCache>
+    
+    
+    <!-- StaticDataCache is configured to cache entities which have static data, for example (Country, Role, Industry, Time zone etc.
+     	Cache region should set to "StaticDataCache" by HQL query or Entity for using this cache.
+     	There will be no expiry of data in this cache because eternal option is true for this cache.
+      -->
+    <cache
+		name="StaticDataCache"
+	    maxEntriesLocalHeap="1000"
+	    eternal="true"
+   		maxBytesLocalDisk="1G">
+		<persistence strategy="localTempSwap"/>
+	</cache>
+
+	
+	<!-- StandardQueryCache configuration  is used by Hibernate when there is no cache region specified for HQL Query 
+		This cache also holds metadata for cached queries 
+		This cache is refreshed every 5 minutes because eternal is false and timeToLiveSeconds is 5 minutes (300 seconds).
+		This will make sure that cache gets invalidated every 5 minutes.
+	-->
+    <cache
+		name="org.hibernate.cache.internal.StandardQueryCache"
+	    maxEntriesLocalHeap="1000"
+	    eternal="false"
+   		timeToLiveSeconds="300"
+	    maxBytesLocalDisk="10G">
+		<persistence strategy="localTempSwap"/>
+	</cache>
+	
+	<!-- UpdateTimestampsCache keep track(latest timestamp) of changes made in any database table.
+		 Hibernate make use of this cache to verify invalid data in cache.
+		 This cache is refreshed every 5 minutes because eternal is false and timeToLiveSeconds is 5 minutes (300 seconds).
+		 This will make sure that cache gets invalidated every 5 minutes.
+		-->
+	<cache
+		name="org.hibernate.cache.spi.UpdateTimestampsCache"
+		maxEntriesLocalHeap="500"
+		eternal="false"
+   		timeToLiveSeconds="300"
+		maxEntriesLocalDisk="5000">
+		<persistence strategy="localTempSwap"/>
+	</cache>
+    
+</ehcache>
