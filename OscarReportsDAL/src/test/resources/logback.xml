@@ -1,41 +1,27 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <configuration>
 
-	<property name="LOG_LOCATION" value="/apps/logs" />
-
-	<appender name="FILE-AUDIT"
-		class="ch.qos.logback.core.rolling.RollingFileAppender">
-		<file>${LOG_LOCATION}/oscar_reports_dal_test.log</file>
+	<appender name="STDOUT"
+		class="ch.qos.logback.core.ConsoleAppender">
 		<encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
 			<Pattern>
 				%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %class{36}.%M %L - %msg%n
 			</Pattern>
 		</encoder>
-
-		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-			<!-- rollover daily -->
-			<fileNamePattern>${LOG_LOCATION}/archived/oscar_reports_dal_test.%d{yyyy-MM-dd}.%i.log
-                        </fileNamePattern>
-			<timeBasedFileNamingAndTriggeringPolicy
-				class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
-				<maxFileSize>10MB</maxFileSize>
-			</timeBasedFileNamingAndTriggeringPolicy>
-		</rollingPolicy>
-
 	</appender>
 
 	<logger name="com.cme.oscar.reports" level="debug"
-		additivity="true">
-		<appender-ref ref="FILE-AUDIT" />
+		additivity="false">
+		<appender-ref ref="STDOUT" />
 	</logger>
 	
 	<logger name="org.springframework" level="error"
-		additivity="true">
-		<appender-ref ref="FILE-AUDIT" />
+		additivity="false">
+		<appender-ref ref="STDOUT" />
 	</logger>
 
 	<root level="error">
-		<appender-ref ref="FILE-AUDIT" />
+		<appender-ref ref="STDOUT" />
 	</root>
 
 </configuration>

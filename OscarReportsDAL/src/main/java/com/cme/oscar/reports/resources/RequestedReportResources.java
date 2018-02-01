@@ -73,6 +73,6 @@ public class RequestedReportResources {
 
         LOGGER.info("getRequestedReports: finished processing request to fetch requested reports list for X-AUTH-TOKEN: {}. Response: {}", xAuthToken, response);
 
-        return new ResponseEntity<RequestedReportResponse>(response, ResponseUtils.constructHeader(), HttpStatus.OK);
+        return new ResponseEntity<>(response, ResponseUtils.constructHeader(), HttpStatus.OK);
     }
 }

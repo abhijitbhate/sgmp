@@ -11,13 +11,15 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter
 @Configuration
 public class InterceptorConfig extends WebMvcConfigurerAdapter{
 
-
-    @Autowired
-    private GlobalInterceptor globalInterceptor;
-
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
-        registry.addInterceptor(globalInterceptor);
+        registry.addInterceptor(getGlobalInterceptor());
+    }
+
+    @Bean
+    public GlobalInterceptor getGlobalInterceptor()
+    {
+        return new GlobalInterceptor();
     }
 
     @Bean
